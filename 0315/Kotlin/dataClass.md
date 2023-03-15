@@ -1,4 +1,4 @@
- 코틀린의 data class
+#코틀린의 data class
 
 코틀린에서 `data class`는 데이터 저장을 위해 사용됩니다. 
 
