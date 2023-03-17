@@ -7,12 +7,14 @@
 `Processing Stream`
 
 ```
-자바에서는 bufferedWriter, new, bufferedReader... 
+자바에서는 bufferedWriter, new, bufferedReader...
 코틀린에서는 ?
 ```
 
 ### saveFile
+
 파일을 저장합니다.
+
 ```kotlin
 file = File(filesDir, "data.txt")
 
@@ -32,6 +34,7 @@ file = File(filesDir, "data.txt")
 ### loadFile
 
 파일을 읽어옵니다.
+
 ```kotlin
 private fun loadFile(){
         Log.d(TAG, "file: ${file.canonicalPath}")
@@ -58,6 +61,7 @@ private fun loadFile(){
 `assets.open()`
 
 assets 폴더 안의 특정 파일을 읽어 올 때 사용합니다.
+
 ```kotlin
 private fun loadAssets(){
         try{
@@ -74,11 +78,11 @@ private fun loadAssets(){
     }
 ```
 
-
 ### 외부 디렉토리
 
 `getExternalFilesDir()`외장 메모리 경로를 리턴합니다.
 `val file` 로 저장하고 오픈합니다.
+연결상태는 `Environment.getExternalStorageState()`로 확인 가능합니다.
 
 ```kotlin
 externalBtn.setOnClickListener {
@@ -108,10 +112,9 @@ externalBtn.setOnClickListener {
     }
 ```
 
-
 ### 전체 코드
 
-``` Kotlin
+```Kotlin
 class MyFileOutActivity : AppCompatActivity() {
     private lateinit var statusTV: TextView
     private lateinit var saveBtn:Button
@@ -213,3 +216,10 @@ class MyFileOutActivity : AppCompatActivity() {
     }
 }
 ```
+
+### 가상 SD카드
+
+`tmpSDCard.png`
+
+삼성에서는 SD카드를 이제 연결을 못한다.
+그래서 링크(바로가기)로 같은 동작을 할 수 있도록 만들어놨다.
