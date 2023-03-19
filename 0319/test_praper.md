@@ -66,7 +66,7 @@ val intent = Intent(this, NextActivity::class.java)
 startActivity(intent)
 ```
 
-## Intent 값 반환
+### Intent 값 반환
 ```
 // ActivityResultLauncher 객체 생성
 val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
