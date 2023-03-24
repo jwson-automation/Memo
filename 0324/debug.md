@@ -32,3 +32,16 @@ repositories {
     }
 }
 ```
+
+3. 외부 라이브러리
+
+https://meoru-tech.tistory.com/22
+
+gradle.properties
+
+```
+android.useAndroidX=true
+android.enableJetifier=true
+```
+
+추가 필요
