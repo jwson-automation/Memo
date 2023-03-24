@@ -43,5 +43,3 @@ gradle.properties
 android.useAndroidX=true
 android.enableJetifier=true
 ```
-
-추가 필요
