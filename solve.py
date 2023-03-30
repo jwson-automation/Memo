@@ -1,31 +1,39 @@
-n, m, k = map(int, input().split())
+def recur(y, x):
+    global answer
+    print(y, x)
 
-# 라이브러리
+    if y == ay-1 and x == ax-1:
+        answer += 1
+        return
 
-# 라이센스, 프로젝트에서 쓸 수 있냐 없냐.
-# MiT -> 무조건 쓸 수 있음, GPL -> 상업적으로 사용하지 못한다.....
-# 기능적으로 맞아도 라이센스가 안맞으면 배포할 수 없음.
-# mvncenteral
-# jcenter
-# google
-# ....
+    for i in range(3):
+        ey = dy[i] + y
+        ex = dx[i] + x
 
-# ```
-# License
-# Copyright 2013 Square, Inc.
+        if 0 <= ey < ay and 0 <= ex < ax:
+            if graph[y][x] > graph[ey][ex]:
+                recur(ey, ex)
 
-# Licensed under the Apache License, Version 2.0 (the "License")
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+    return
 
-# http: // www.apache.org/licenses/LICENSE-2.0
 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ```
+dy = [0, 1, 0]
+dx = [1, 0, -1]
 
-# 소송 걸릴 수 있음
-#
+ay, ax = map(int, input().split())
+graph = [list(map(int, input().split())) for _ in range(ay)]
+count_graph = [[0 for _ in range(ax)] for _ in range(ay)]
+
+answer = 0
+
+recur(0, 0)
+
+print(answer)
+
+# 2차원은 1차원으로 보고 경우의수로 해준다.
+# 결과론적으로는 2차원 DP가 되어야 할 것 같다.
+
+# 내리막길을 갈거다.
+# 이제 이걸 탑다운 DP로 바꿀 예정이다.
+
+# y,x에 도달했을때, 뒤를 업데이트 하는 방법을 쓰면
