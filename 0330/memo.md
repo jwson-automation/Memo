@@ -8,4 +8,4 @@
 
 https://blog.jetbrains.com/ko/kotlin/2022/10/kmm-beta/
 
-###
+### 네이티브는 무조건 3명
