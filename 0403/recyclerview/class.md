@@ -227,3 +227,34 @@ event 처리 전에, R.id를 ViewBinding으로 변경
 `viewholder`에
 `View.OnCreateContextMenuListener`를 추가 상속해줘서
 이벤트 리스터를 달아주고, 임플리먼츠되어있는 메소드 가져와줍니다.
+
+- `itemView`는 `binding.root`에서 가져오는 최상위클래스가 가지고 있는 것이기 떄문에 어디서든 쓸 수 있습니다.!!!
+
+- // true : 여기서 끝, false : 다음 진행
+
+---
+
+event Listener를 넣어줄건데
+
+Adapter에 넣어주는게 맞을까? [ 어댑터는 보여주는 역할인데...]
+
+이벤트 처리를 이렇게 막 쳐넣어도 되나?
+
+--> 그건 좀 아니잖아
+
+그러니까 Adapter를 외부에서 주입해서 역할을 나눌 수 있습니다.
+
+---
+```
+.apply {
+                Toast.makeText(parent.context,"선택", Toast.LENGTH_SHORT).show()
+            }
+```
+---
+
++
+nested class : default
+
+inner class : 바깥에 있는 class에 엑세스 하기 위해서는 `inner`가 붙어야함
+---
+
