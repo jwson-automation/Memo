@@ -123,3 +123,107 @@ ItemRowBinding.inflate(LayoutIflater.from(parent.context)) 도 가능!
 ```
 
 ---
+
+이제 리사이클러뷰로 넘어갑니다!
+
+hahahahahahahaha
+
+리스트뷰도 많습니다. ListView에 홀더 달아둔게 이상한게 아닙니다.
+
+하지만, 리사이클러뷰라는걸 이제 씁니다.
+
+---
+
+ListView는 개발자가 건드릴게 너무 많다.
+
+그러니까, 우리는 RecyclerView라는걸 만들었다.
+
+---
+
+`BaseAdapter()`라는 친구를 가져와서 어댑터를 만들건데
+이걸 상속받아오면,
+GetView, GetCount, GetItem, GetItemID 이런 애들을 데려온다.
+
+핵심은 이중에 `GetView`다.
+
+---
+
+## ListView vs RecyclerView
+
+RecyclerView
+
+1. ViewHolder를 반드시 사용해야한다. (RecyclerView.viewHolder)
+2. StaggeredGridLayout[크기가 모두 다른 카드 리스트]도 가능하다.
+3. ItemAnimator가 존재한다.
+4. 커스텀 Adapter를 구현해야 한다.
+5. ItemDecoration 객체를 사용해서 구분선 설정이 까다롭다.
+6. 개별터치 이벤트를 관리하지만, 클릭 처리가 내장되어 있지 않다. RecyclerView.OnItemTouchListener
+
+---
+
+만드는 방법
+
+1. RecyclerView를 만든다.
+2. Adapter를 상속받아와서 만든다.
+3. Adapter의 메소드를 3개 만든다.
+4. ViewHolder를 만든다.
+5. GetView를 메소드를 구현한다.
+6. 연결한다.
+
+---
+
+```Kotlin
+class MyAdapter(var list : ArrayList<String>) : RecyclerView.Adapter<MyAdapter.CustomViewHolder>() {
+        class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+            var name = itemView.findViewById<TextView>(R.id.name)
+            // [아래는 추가적으로 만드는 것] private 대신에 아래처럼 setter만들어줌
+            fun bindInfo(data:String){
+                name.text = data
+            }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
+            // view를 생성 -> holder의 파라미터로 넣어줌. 바로 위에 보면 class가 그렇게 생겼잖아
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_row, parent,false)
+            // atatchToRoot : <ListView> 여기에 넣을까요? 라는 뜻! </ListView>
+            return CustomViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+            // 데이터와 ViewHOlder를 연결해주는 친구임
+            // holder는 위에 만든 CustomViewHolder임
+
+            // 그냥 고치고 싶으면 아래 방법을 사용!
+//            holder.name.text = list[position]
+            //세터처럼 쓰고 싶으면 아래 방법을 사용!
+            holder.bindInfo(list[position])
+        }
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+    }
+```
+
+---
+
+event 처리,
+
+View Bind 바꿔보기,
+
+상당히 어려움!
+
+-->
+
+---
+
+event 처리 전에, R.id를 ViewBinding으로 변경
+--> 이건 계속해서 반복해보면서 구조를 눈에 익혀야함!
+
+---
+
+`viewholder`에
+`View.OnCreateContextMenuListener`를 추가 상속해줘서
+이벤트 리스터를 달아주고, 임플리먼츠되어있는 메소드 가져와줍니다.
