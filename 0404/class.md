@@ -380,6 +380,7 @@ class DialogActivity : AppCompatActivity() {
 ```
 
 ### 예제코드2
+
 ```Kotlin
 class DialogActivity2 : AppCompatActivity() {
     private val DIALOG_YES_NO_MESSAGE = 1
@@ -541,4 +542,22 @@ class DialogActivity2 : AppCompatActivity() {
 
 ```
 
-### 실습 9.
+### 실습 9. progress dialog
+
+진행상태 바를 보여주려고 할 때,
+
+1. `for 반복문 + sleep` 을 넣어서 `mProgress`값을 강제로 변화시켜도 프로그레스바는 동작하지 않습니다.
+2. `Thread`간의 통신을 하기 위해서는 `Handler`라는 것을 가지고 있습니다.
+3. 따라서 `mProgressHandler`를 사용해야만 가능합니다.
+
+```Kotlin
+Thread{
+                for (i in 1..100){
+//                    mProgress = i 이거 안되니까 핸들러 쓸거임
+                    mProgressHandler.sendEmptyMessage(0)
+//                    Log.d("hey", "onCreate: $i")
+//                    Thread.sleep(10)
+                }
+            }.start()
+        }
+```
