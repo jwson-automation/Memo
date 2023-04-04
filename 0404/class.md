@@ -75,7 +75,6 @@ ToolBar, 다양한 알림
 2. 생성자에 Context와 AttributeSet을 넣어줍니다.
 3. init을 해줍니다. (findViewById...)
 4. 데이터 타입은 `attrs.xml`에 선언해줍니다.
-
 5. getAttrs를 해줍니다.... 
 
 
@@ -115,5 +114,66 @@ class CustomNameCard : ConstraintLayout {
         )
         typedArray.recycle()
     }
+}
+```
+
+### 실습 5. 그림판 만들기
+```
+package com.ssafy.userinterface_4.paint_basic
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.util.AttributeSet
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+
+data class Point(var x:Float, var y:Float, var isContinue:Boolean)
+
+private const val TAG = "DrawSample_싸피"
+class DrawSample : View  {
+    var list = arrayListOf<Point>()
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) { }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        val paint = Paint()
+        paint.color = Color.BLUE
+        paint.strokeWidth = 10f
+
+        list.forEachIndexed { index, point ->
+            if(point.isContinue){
+                canvas.drawLine(list[index-1].x,list[index-1].y,point.x, point.y, paint)
+//                canvas.drawPoint(point.x,point.y,paint)
+            }
+        }
+
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when(event.action){
+            MotionEvent.ACTION_DOWN -> {
+                list.add(Point(event.x,event.y,false))
+                Log.d(TAG, "onTouchEvent: DOWN")
+            }
+            MotionEvent.ACTION_MOVE -> {
+                list.add(Point(event.x,event.y,true))
+                Log.d(TAG, "onTouchEvent: MOVE")
+            }
+            MotionEvent.ACTION_UP -> {
+                list.add(Point(event.x,event.y,false))
+                Log.d(TAG, "onTouchEvent: UP")
+            }
+        }
+        invalidate()
+
+        //touch이후에 event를 전달할것인가? true: 여기서 종료. false :뒤로 전달.
+        // touch -> click -> longclick
+        return true
+    }
+
 }
 ```
