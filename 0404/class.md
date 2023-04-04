@@ -542,7 +542,7 @@ class DialogActivity2 : AppCompatActivity() {
 
 ```
 
-### 실습 9. progress dialog
+### 실습 9. Progress dialog
 
 진행상태 바를 보여주려고 할 때,
 
@@ -561,3 +561,5 @@ Thread{
             }.start()
         }
 ```
+
+### 실습 10. 그림판 만들기 실습!
