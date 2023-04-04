@@ -245,16 +245,17 @@ Adapter에 넣어주는게 맞을까? [ 어댑터는 보여주는 역할인데..
 그러니까 Adapter를 외부에서 주입해서 역할을 나눌 수 있습니다.
 
 ---
+
 ```
 .apply {
                 Toast.makeText(parent.context,"선택", Toast.LENGTH_SHORT).show()
             }
 ```
+
 ---
 
-+
-nested class : default
+- nested class : default
 
-inner class : 바깥에 있는 class에 엑세스 하기 위해서는 `inner`가 붙어야함
----
+## inner class : 바깥에 있는 class에 엑세스 하기 위해서는 `inner`가 붙어야함
 
+notifyDataSetChaged 와 ListAdapter의 관계를 다음에 설명하겠습니다.
