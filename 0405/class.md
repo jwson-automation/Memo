@@ -91,8 +91,19 @@ override fun onCreate(savedInstanceState: Bundle?) {
 `액션은 정했고, 데이터는 지정했다.`
 하지만 누가?! choose 어떤걸로 갈건데? -> 전화라면 전화 앱 브라우저라면 브라우저 앱...
 
+`ACTION_VIEW`에서 `Uri.parse("geo:36.1138655,128.4038385")`로 인텐트를 암시적으로 보내면, 구글 지도가 연결된다.
+
+`ACTION_VIEW`에서 `Uri.parse("content://contacts/people/1")`을 보내면 연락처가 연결된다!
+
+완전 신기하지 않나??
+
 ## Task
 
 ## Activity Mode
 
 ## Activity Change
+
+### 그외
+
+- 네이버가 무거운 이유
+  구글에서 웹뷰 문제가 발생한 적이 있어서, 웹뷰 베이스 버전을 그냥 앱에 넣어버렸다. 구글걸 가져오는 방향으로 실행하면 문제가 발생할 수 있기 때문!
