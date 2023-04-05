@@ -164,6 +164,49 @@ class MainActivity1 : AppCompatActivity() {
 
 ## Task
 
+어렵습니다.
+
+Task란, 실행된 Activity들을 순서대로 묶어서 관리하는것
+
+개발자와 다르게, 사용자 입장에서는 Gmail, Chrome,등의 브라우저나 앱도 하나의 패키지라고 생각할 수 있습니다.
+
+1. 스택으로 표현하면 아래와 같이 쌓입니다.
+
+```
+|동영상플레이어 (onResume)  |
+|Chrome (onStop)            |
+|Gmail (onStop)             |
+```
+
+2. 같은 Activity라고 해도 다르게 불렸다면 중복된 Activity가 새로 생성되어 쌓입니다.(standard mode)
+
+```
+|Gmail              |
+|Chrome             |
+|동영상플레이어     |
+|Chrome             |
+|Gmail              |
+```
+
+3. 문제는 아래 같은 상황입니다.
+
+뒤로가기를 눌렀다면 `이체완료`가 아닌 `뱅킹홈`으로 가야한다.
+
+```
+뱅킹 홈 > 계좌조회 > 계좌이체 > 이체완료 > 계좌조회(뒤로가기)
+```
+
+4. 이걸 정하는게 
+Launch Mode Activity Flag ...
+- Standard
+- SingleTop
+:`top activity와 동일한 activity가 실행하면 기존의 top activity를 재사용...`
+- SingleTask
+:`Activity를 재사용해 중복을 허용하지 않음`
+- SingleInstance
+:`중복을 허용하지 않을 뿐 아니라 혼자서 별도의 task를 구성함..`
+
+
 ## Activity Mode
 
 ## Activity Change
