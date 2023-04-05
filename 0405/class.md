@@ -196,20 +196,79 @@ Task란, 실행된 Activity들을 순서대로 묶어서 관리하는것
 뱅킹 홈 > 계좌조회 > 계좌이체 > 이체완료 > 계좌조회(뒤로가기)
 ```
 
-4. 이걸 정하는게 
-Launch Mode Activity Flag ...
-- Standard
-- SingleTop
-:`top activity와 동일한 activity가 실행하면 기존의 top activity를 재사용...`
-- SingleTask
-:`Activity를 재사용해 중복을 허용하지 않음`
-- SingleInstance
-:`중복을 허용하지 않을 뿐 아니라 혼자서 별도의 task를 구성함..`
-
-
 ## Activity Mode
 
+4. 이걸 정하는게
+   Launch Mode Activity Flag ...
+
+- Standard
+- SingleTop
+  :`top activity와 동일한 activity가 실행하면 기존의 top activity를 재사용...`
+- SingleTask
+  :`Activity를 재사용해 중복을 허용하지 않음`
+- SingleInstance
+  :`중복을 허용하지 않을 뿐 아니라 혼자서 별도의 task를 구성함..`
+
+### SingleTop
+
+아래와 같이 manifest에서 바꿔주거나, Activty호출 시에 직접 설정해주는 방법이 있다.
+
+```
+<activity android:name=".Banking2Account" android:label="계좌조회"/>-->
+<activity android:name=".Banking2Account" android:label="계좌조회" android:launchMode="singleTop"/>
+```
+
+이 때, 새롭게 달라질 때, onNewIntent()를 호출해서 동작을 설정해줄 수 있다.
+
+### SingleTask
+
+중복을 허용하지 않으며, 호출하는 순간 뒤를 다 날려버립니다!
+
+### SingleInstance
+
+이빨이 빠진 것처럼 됩니다. (?)
+
+죽여서 당겨옵니다. (왜??)
+
+일반적으로 사용할 일은 잘 없음! 쓰지마세요
+
 ## Activity Change
+
+위에서는 런치모드를 이용해서 바꿔줬는데
+
+Flag를 사용해서 바꾸는 방법도 존재함
+
+### NO_HISTORY
+
+스택(히스토리)에 쌓지마세요!
+
+```Kotlin
+        val intent = Intent(this, SubActivity1::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        }
+        startActivity(intent)
+```
+
+```manifest
+<!--<activity android:name=".SubActivity1" android:noHistory="true"/>-->
+```
+
+### CLEAR_TASK
+
+쌓여있던 Task 내의 다른 Activity를 모두 삭제해주세요!
+
+```Kotlin
+binding.btnCallSub2NewTask.setOnClickListener {
+            val intent = Intent(this, SubActivity2::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+        }
+```
+
+```minifest
+
+```
 
 ### 그외
 
