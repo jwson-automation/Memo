@@ -95,7 +95,16 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 `ACTION_VIEW`에서 `Uri.parse("content://contacts/people/1")`을 보내면 연락처가 연결된다!
 
+`ACTION_INSERT`를 하면 연락처 추가도 가능!
+
 완전 신기하지 않나??
+
+`intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:01022222222))`
+`intent.putExtra("sms_body","SMS 연습입니다.)`
+
+이렇게 하기만해도 특정 전화로, 문자 "SMS연습입니다."를 보내기 직전인 창을 띄워줍니다. 개굳!
+
+`ACTION_DIAL` 다이얼 걸어줘!
 
 ## Task
 
