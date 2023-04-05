@@ -106,6 +106,62 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 `ACTION_DIAL` 다이얼 걸어줘!
 
+## Permission
+
+권한관련
+
+```
+보통 퍼미션 라이브러리를 가져와서 쉽게 사용하는 편이지만, 그렇게 하더라도 하나하나의 반례를 처리해주는 데 많은 양의 코드가 필요하다.
+
+1. 권한이 거절당했을 때,
+2. 특정 권한이 거절당했고, 다른 권한은 있을 때, 등 ...
+
+Runtime Permissions > 코드로 구현해야하는 퍼미션.. 이게 어렵다.
+```
+
+### install permission
+
+그냥 manifest에 넣으면 설치할때 요청하는 퍼미션입니다.
+
+### Runtime Permission
+
+실행 될 때 요청하는 퍼미션입니다.
+
+- ManiFest에 넣기
+- 권한 체크, 요청창 띄우고 응답받기, 최종권한 없을 때 설정으로 이동... 등을 구현해줘야합니다.
+
+만약에 지도를 띄운다면 가장 최근의 위치정보를 어떻게 띄우죠?
+
+### 지도 위치 저장 샘플 코드
+
+```Kotlin
+class MainActivity1 : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Location Manager 획득.
+        val manager = getSystemService(LOCATION_SERVICE) as LocationManager
+
+        // 가장 최근의 위치정보
+        var location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+        var lat = location?.latitude  //위도
+        var lon = location?.longitude //경도
+
+        Log.d(TAG, "onCreate: 위도 : $lat , 경도 :$lon")
+
+        //1. 권한 체크
+        var coarseResult = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        var fineResult = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+
+        Log.d(TAG, "onCreate.coarseResult: $coarseResult")
+        Log.d(TAG, "onCreate.fineResult: $fineResult")
+    }
+}
+```
+
 ## Task
 
 ## Activity Mode
@@ -116,3 +172,5 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 - 네이버가 무거운 이유
   구글에서 웹뷰 문제가 발생한 적이 있어서, 웹뷰 베이스 버전을 그냥 앱에 넣어버렸다. 구글걸 가져오는 방향으로 실행하면 문제가 발생할 수 있기 때문!
+
+- 모든 Manager들은 GetSystemService(LOCATION_SERVICE)로부터 가져온다.
