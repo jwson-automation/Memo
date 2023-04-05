@@ -257,6 +257,8 @@ Flag를 사용해서 바꾸는 방법도 존재함
 
 쌓여있던 Task 내의 다른 Activity를 모두 삭제해주세요!
 
+꺼주세요!
+
 ```Kotlin
 binding.btnCallSub2NewTask.setOnClickListener {
             val intent = Intent(this, SubActivity2::class.java).apply {
@@ -266,8 +268,21 @@ binding.btnCallSub2NewTask.setOnClickListener {
         }
 ```
 
-```minifest
+### CLEAR_TOP \ SINGLE_TOP
 
+CLEAR TOP : 다 죽이고 재실행 해주세요.
+`스택 내부에서 현재 Activity 위에 있는 모든 Activity를 제거하고, 현재 Activity를 스택의 맨 위로 올립니다. 이를 통해 중복된 Activity를 제거하고, 현재 Activity를 다시 실행할 수 있도록 합니다.`
+SINGLE TOP : 다시 실행하는게 아니라, 기존의 것을 재사용해주세요.
+`현재 Activity가 이미 스택의 맨 위에 있다면, 해당 Activity를 재사용합니다. 스택 내부에서 중복된 Activity를 생성하지 않고, 기존에 생성된 Activity를 재사용하여 성능을 향상시킵니다.`
+
+```Kotlin
+binding.btnCallSub1.setOnClickListener {
+            val intent = Intent(this, SubActivity1::class.java).apply {
+//                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP  or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+        }
 ```
 
 ### 그외
