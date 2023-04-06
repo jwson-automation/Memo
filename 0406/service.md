@@ -67,6 +67,114 @@ bindService() > onCreate() > onBind() > BindRunning > onUnbind() > onDestroy
    - Messenger , Handler를 사용한다.
    - AIDL (Android Interface Definition Language) 를 이용하여 서비스 구현
 
-   `AIDL` `인터페이스 정의언어란`?
+   ```
+   AIDL 인터페이스 정의언어란?
    VM이 다르다고 해도, C나 Java 둘다 결국 String, Int 쓸텐데 데이터 왔다 갔다 할때마다 내가 다 매번 해줘야 하는게 말이 됨?!
    어차피 데이터 타입은 정해져 있고, 네트워크 코드 함짜두면 계속 쓸 수 있을텐데... --> 그래서 `데이터 교환을 위한 네트워크 코드를 정의해둔 인터페이스`가 `AIDL` 입니다.
+   ```
+
+   오후에 AIDL을 만들어 볼 예정입니다.
+   안드로이드 코드서치에 들어가서, 프레임워크의 코드를 열어보면 aidl이 참 많이 들어있습니다. 이런 aidl 통신을 하는게 `binder` 드라이버 입니다. ( 통신이라고 하지만, 네트워크로 주고 받는게 아닌 안드로이드 내부 리눅스 안에서 데이터를 주고 받는 것을 말함)
+
+   여기서 핵심!
+
+   ```
+   apk가 2개가 있다고 했을 때, 서버를 이용하거나 네트워크(인터넷)을 사용해서 정보를 교환시키는 것보다는, 리눅스의 자체 커널 `바인더`를 사용해서 통신을 시키는게 퍼포먼스 적으로 훨씬 이득이다.
+   ```
+
+   따라서,
+
+   ```
+   바인드 서비스라는 걸 이용하는 이유는, 구조적으로 예쁠뿐만 아니라, 퍼포먼스 적으로 네트워크를 사용하지 않고 다른 VM끼리 통신을 가능하게 만들어서 효율적이다!
+   ```
+
+   여기에서 사용하는게 `Parcelable` 입니다.
+   (안드로이드는 Parcel을 사용하는 것을 권장합니다. 그래서 맨날 추천에 뜨나봄)
+
+### bindService 프로세스
+
+```
+Activity
+> ServiceConnection  --> [bindService(Service Connection)] -->
+> Service
+> Binder  --> [ServiceConnection.onServiceconnected(Binder)] -->
+> Service Connection
+```
+
+### 샘플코드
+
+```Kotlin
+class BoundService : Service() {
+
+    // 기본적으로 생성됨
+    override fun onBind(p0: Intent?): IBinder? {
+        return MyLocalBinder()
+    }
+
+    fun getCurrentTime() : String {
+        return Date().toString()
+    }
+
+    // 이너를 붙여줘야 바깥에 엑세스 가능합니다.
+    // 액티비티가 나를 호출할거고, 나는 호출 당한 후에 Binder를 리턴해주고
+    // 리턴값을 받은 액티비티는 getCurrentTime을 이용해서 값을 얻을 수 있다.
+    inner class MyLocalBinder() : Binder() {
+        fun getService() : BoundService {
+            return this@BoundService
+        }
+    }
+
+}
+```
+
+```Kotlin
+class BindActivity : AppCompatActivity() {
+    lateinit var myService : BoundService
+    private var isBound = false
+
+    // ServiceConnection이라는 인터페이스를 가져오기 위해서는
+    // 앞에 Object를 붙여주면 된다. ( 그렇게 쓴다. )
+    val connection = object : ServiceConnection{
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            val binder = p1 as BoundService.MyLocalBinder
+            myService = binder.getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            isBound = false
+        }
+
+    }
+
+    private lateinit var binding : ActivityBindBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityBindBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        binding.button.setOnClickListener(){
+            if(isBound){
+            binding.textView.text = myService.getCurrentTime()
+            }else{
+                binding.textView.text = "not Connected"
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // 바인딩 할겁니다
+        val intent = Intent(this, BoundService::class.java)
+        bindService(intent, connection, BIND_AUTO_CREATE)
+    }
+
+}
+```
+
+### 그외
+
+`시리얼라이즈블` vs `Parcelable`
+
+IBinder,, I는 인터페이스다...
