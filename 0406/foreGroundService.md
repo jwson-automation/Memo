@@ -205,3 +205,111 @@ object Actions {
     const val STOP = prefix +"stop"
 }
 ```
+
+## Notification
+
+```Kotlin
+class SimpleNotification:AppCompatActivity (){
+
+    lateinit var binding:ActivityNotificationBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityNotificationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.buttonNoti.setOnClickListener{
+            createNotification();
+        }
+    }
+
+    fun createNotification(){
+        val channelId = "$packageName-$localClassName"
+        val title = "Simple Notification"
+        val content = "This is simple android notification"
+
+        // Oreo 부터는 Notification Channel을 만들어야 함
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel(
+                channelId,
+                title,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = applicationContext.getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(serviceChannel)
+        }
+
+        val intent = Intent(applicationContext, SimpleNotification::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = PendingIntent.getActivity(applicationContext, 0,
+            intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val builder = NotificationCompat.Builder(this, channelId)
+        builder.setSmallIcon(R.drawable.ic_baseline_add_comment_24)
+        builder.setContentTitle(title)
+        builder.setContentText(content)
+        builder.priority = NotificationCompat.PRIORITY_DEFAULT
+        builder.setAutoCancel(true)
+        builder.setContentIntent(pendingIntent)
+
+        val notificationManager = NotificationManagerCompat.from(this)
+        notificationManager.notify( 100, builder.build())
+    }
+
+}
+```
+
+## Picture Notification
+
+```Kotlin
+class PictureNotification:AppCompatActivity (){
+    lateinit var binding:ActivityPictureNotificationBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPictureNotificationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.buttonNoti.setOnClickListener{
+            createNotification();
+        }
+    }
+
+    fun createNotification(){
+        val channelId = "$packageName-$javaClass"
+        val title = "Picture Notification"
+        val content = "This is Picture notification"
+
+        // Oreo 부터는 Notification Channel을 만들어야 함
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel(
+                channelId,
+                title,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = applicationContext.getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(serviceChannel)
+        }
+
+        val intent = Intent(applicationContext, PictureNotification::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = PendingIntent.getActivity(applicationContext, 0,
+            intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val style = NotificationCompat.BigPictureStyle()
+        style.bigPicture( BitmapFactory.decodeResource(resources, R.drawable.grand) )
+//        style.bigLargeIcon(null)
+
+        val builder = NotificationCompat.Builder(this, channelId)
+        builder.setStyle(style)
+        builder.setSmallIcon(R.drawable.ic_baseline_add_comment_24)
+//        builder.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.grand))
+        builder.setContentTitle(title)
+        builder.setContentText(content)
+        builder.priority = NotificationCompat.PRIORITY_DEFAULT
+        builder.setAutoCancel(true)
+        builder.setContentIntent(pendingIntent)
+
+        val notificationManager = NotificationManagerCompat.from(this)
+        notificationManager.notify(hashCode(), builder.build())
+    }
+
+}
+```
