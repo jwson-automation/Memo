@@ -101,7 +101,7 @@ Activity
 > Service Connection
 ```
 
-### 샘플코드
+### local bind 실습 ( 필수로 알아야함! )
 
 ```Kotlin
 class BoundService : Service() {
@@ -173,8 +173,132 @@ class BindActivity : AppCompatActivity() {
 }
 ```
 
+### remote bind 실습 ( 교양 )
+
+1. `메신저 핸들러`를 이용해서 구현하는 방법
+
+동시에 너무 많은 양의 데이터가 요청되면 핸들러가 하나씩 처리합니다.
+`퍼포먼스적으로 단점이 있습니다.`
+
+`Looper`라는 친구가 이 과정에서 Queue를 관리해줍니다.
+
+Remote Service
+
+```Kotlin
+class MyRemoteService : Service() {
+    private lateinit var mMessenger: Messenger
+
+    internal class  IncomingHandler(
+        context: Context,
+        private val applicationContext: Context = context.applicationContext
+    ) : Handler(
+        Looper.myLooper()!! // 현재 스레드에 할당된 looper 객체 반환
+    ) {
+        // 메시지를 수신했을 때 처리할 동작 구현
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            val data = msg.data
+            val str = data.getString("MyString")
+            Toast.makeText(applicationContext, "${str} \n ${getFormattedDate()}" , Toast.LENGTH_SHORT).show()
+        }
+
+        private fun getFormattedDate() : String {
+            val format = SimpleDateFormat("yyyy-MM-dd kk:mm:ss E", Locale.KOREAN) //format 설정
+            format.timeZone = TimeZone.getTimeZone("Asia/Seoul") //TimeZone  설정 (GMT +9)
+
+            //현재시간에 적용
+            return format.format(Date().time)
+        }
+    }
+
+    // Handler를 이용해 만든 Messenger를 이용해 클라이언트에 반환될 iBinder 객체 반환한다.
+    override fun onBind(intent: Intent): IBinder {
+        mMessenger = Messenger(IncomingHandler(this))
+        return mMessenger.binder
+    }
+}
+```
+
+Activity
+
+```Kotlin
+class RemoteActivity : AppCompatActivity() {
+    private var myService: Messenger? = null
+    private var isBound = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            myService = Messenger(p1)
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            myService = null
+            isBound = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // 서비스 바인딩 처리
+        if (!isBound) {
+            var target = ComponentName("com.ssafy.service.b_remote_binder", "com.ssafy.service.b_remote_binder.MyRemoteService")
+            Intent().setComponent(target).also { intent ->
+                bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
+        }
+    }
+
+    private lateinit var binding: ActivityRemoteBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityRemoteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.button2.setOnClickListener {
+            sendMessage(it)
+        }
+    }
+    fun sendMessage(view: View) {
+        if (!isBound) return
+        val msg = Message.obtain()
+        msg.data = Bundle().apply { putString("MyString", "This is Message") }
+        // 서비스의 사용
+        myService?.send(msg)
+
+    }
+}
+```
+
+하지만, 조건이 있습니다.
+https://developer.android.com/training/basics/intents/package-visibility?hl=ko
+
+API 수준이 30 이상인 경우, 내 APK에서 선언을 해줘야 합니다.
+이런 권한이 추가되어 있지 않은 경우에는 오류가 발생하지 않습니다. 주의하세요.
+
+따라서 호출하고 Responce를 받는 액티비티 APK에서 아래와 같이 bind service를 추가해줘야 합니다.
+
+```
+<queries>
+        <package android:name="com.ssafy.service.b_remote_binder"/>
+</queries>
+```
+
+2.
+
 ### 그외
 
 `시리얼라이즈블` vs `Parcelable`
 
 IBinder,, I는 인터페이스다...
+
+Content Provider 생성,
+Remote Local Bind Service는 사실 몰라도 괜찮습니다.
