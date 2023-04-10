@@ -32,6 +32,14 @@ constraintLayout 상단에 스크롤뷰를 추가해주면 키보드가 제공�
     android:layout_height="match_parent">
 ```
 
+또는 아래와 같이 edit Text에 스크롤바를 만들어 주는 것으로 해결 가능하다. ( 사진 참고 )
+
+```xml
+<editText
+scrollbars = "verticle"
+/>
+```
+
 ## 로그인으로 뒤로가기 못하게 막는 방법
 
 FLAG를 이용해서 CLEAR, NEW를 해주면 해당 액티비티가 스택에서 빠진다.
