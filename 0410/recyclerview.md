@@ -97,4 +97,68 @@ adapter.deleteListener = object : MyAdapter.DeleteListener {
         }
 ```
 
-###
+### Swipe
+
+꾹 눌러서 위치이동, 그리고 왼쪽으로 밀어서 삭제
+
+일단 삭제는 당연히 아까 비교할 때 사용했던 `submitList`를 사용해준다.
+
+```kotlin
+// 삭제. 해당위치의 아이템을 삭제한다.
+        fun removeItem(position: Int){
+            val newList = currentList.toMutableList()
+            newList.removeAt(position)
+            submitList(newList)
+        }
+```
+
+스왑은 `swap`이라는 콜렉션 메소드를 가져와서 써준다.
+
+```
+fun moveItem(fromPosition:Int, toPosition:Int){
+            val newList = currentList.toMutableList()
+            Collections.swap(newList,fromPosition,toPosition)
+            submitList(newList)
+        }
+```
+
+`ItemTouchHelper`를 사용해서 위 두 메소드를 이벤트로 만들것이다.
+
+```kotlin
+inner class ItemTouchCallBack():ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                moveItem(viewHolder.layoutPosition,target.layoutPosition)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                removeItem(viewHolder.layoutPosition)
+            }
+
++ 선택되엇을때, 호출 되었을때 색상을 변경
+
+```kotlin
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                when(actionState){
+                    ItemTouchHelper.ACTION_STATE_DRAG,ItemTouchHelper.ACTION_STATE_SWIPE ->
+                        (viewHolder as MyAdapter.CustomViewHolder).setBackground(Color.LTGRAY)
+
+                }
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+                (viewHolder as MyAdapter.CustomViewHolder).setBackground(Color.WHITE)
+            }
+        }
+````
