@@ -67,7 +67,7 @@ override fun getItemCount(): Int {
         }
 ```
 
-이제 데이터를 어댑터에 넣어주지 않아도 됩니다.
+이제 데이터를 아래와 같이 넣어줍니다.
 
 ```kotlin
 before --
@@ -79,6 +79,22 @@ after --
 // 기존의 목록과 새로운 목록을 비교하기 때문에, 두 목록의 reference는 달라야 한다. toMutableList로 새로 생성.
 val data = COUNTRIES
 adapter.submitList(data.toMutableList())
+```
+
+삭제되면 새로운 List를 만들어서 DiffUtil에 던져주면
+
+DiffUtil이 `오 이거 바뀐건데? 내가수정함 ㅋㅋ` 해줌
+
+```
+adapter.deleteListener = object : MyAdapter.DeleteListener {
+            override fun delete(position: Int) {
+                Log.d(TAG, "delete: $position")
+                data.removeAt(position)
+//                adapter.notifyDataSetChanged() //필요없어짐.
+                //data 의 reference가 바뀌어야 ListAdapter가 워킹함.
+                adapter.submitList(data.toMutableList())
+            }
+        }
 ```
 
 ###
