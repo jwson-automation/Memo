@@ -7,3 +7,12 @@
 또 어떻게 동기화를 유지해야 할까요?
 
 그게 바로 `val resolver = contentResolver` 입니다.
+
+1. 결과를 가져오는 `Corsor`를 생성합니다.
+2. uri를 잘 넣어줍니다.
+3. Query 도 잘 넣어줍니다.
+
+## ContentResolver
+
+
+
