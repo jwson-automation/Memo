@@ -71,6 +71,16 @@ private fun initBtn() {
     }
 ```
 
+## LifeCycle
+
+: Activity에서는 onCreate가 하는 일의 범위가 통합적인데, Fragment에서는 모두 분리되어 있습니다. `Fragment`가 이후에 개발된 것이라서 그렇다고 생각해도 좋을 것 같고, Activity와의 연관성을 생각해서 쪼갠거라고 생각해도 좋을 것 같습니다.
+
+`onAttach()` : 가장 먼저 붙을 때
+`onCreate()` : 값 세팅
+`onCreateView()` : Layout inflate 단계
+`onViewCreated()` : View 생성 완료, UI 초기화 작업 ( textView binding 같은 )
+`onDettach()` : 마지막 떨어질 때
+
 ## 기타
 
 - 예전에는 바텀네브바가 아니라 탭매니져라는 친구를 사용했었음
@@ -84,3 +94,13 @@ private fun initBtn() {
 - support 7? support 4?
 
 - `@JvmStatic`? : Java에서 호출하기 위해서 Companion을 자연스러운 java static으로 바꿔주는 어노테이션입니다.
+
+- viewBinding을 `Fragment`에서 사용할때는 `Activity`와 다르게 선언하는 위치를 한번 더 생각해야 한다. ( 공식 문서 참고 )
+
+- Fragment Life Cycle이 위치가 바뀐 것도 있고 ( API28 이후로 위치가 또 바뀜 )
+
+- Activity안에서 다수의 Fragment가 동시적으로 생성되고 사라짐을 반복하며, Bundle도 유지하기 때문에 memory leak, 변수 전달 에러, 오동작, 등의 문제가 계속해서 발생한다.
+
+- 어려운게 맞는데, 왜 어려운지는 알아야 한다!
+
+- 뒤로가기에 원래 반영이 안되는데, 백스택에 넣는 방법도 있다! ( BackStack )
