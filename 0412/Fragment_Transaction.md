@@ -5,5 +5,3 @@
 `.replce`는 모두 삭제 후 교체합니다.
 `.add`는 백스택에 쌓습니다.
 `.remove`는 제거
-
-- Fragment에
