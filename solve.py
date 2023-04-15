@@ -1,10 +1,9 @@
 def recur(idx,pre):
     if pre > 2 :
-        return -9999999
-
+        return -9999999    
     if idx > n :
-        return 0
-
+        return -9999999
+    
     if dp[idx][pre] != -1:
         return dp[idx][pre]
 
