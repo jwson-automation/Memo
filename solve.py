@@ -1,26 +1,23 @@
-def recur(idx):
+def recur(idx,pre):
+    if pre > 2 :
+        return -9999999
 
-    if idx == 2 :
-        return False
+    if idx > n :
+        return 0
 
-    cnt = 0
-    for i in range(3):
+    if dp[idx][pre] != -1:
+        return dp[idx][pre]
 
-        if recur(idx-i) == False:
-            cnt += 1
+    dp[idx][pre] = max(stair[idx],(recur(idx+1,pre+1) + stair[idx]), (recur(idx+2,1) + stair[idx]))
 
-    return recur(idx)
-    
+    return dp[idx][pre]
+
 n = int(input())
-numbers = [1,3,4]
-recur(n)
+stair = [0]
+dp = [[-1,-1,-1] for _ in range(n+1)]
+for _ in range(n):
+    score = int(input())
+    stair.append(score)
 
-# 먼저 2로 만들 수 있는지 보기, 없다면 pass
-
-# 
-
-
-
-# 1,3,4를 버리고 줬을 때 2를 만들수 있냐 없냐를 꺼내야함.
-
-# 누군가가 2를 만들었다고 하면 그때 승패가 결정된다.
+print(recur(1,0))
+print(dp)
