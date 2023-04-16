@@ -1,22 +1,23 @@
-def recur(idx,pre):
-    if pre > 2 :
-        return -9999999    
-    if idx > n :
-        return -9999999
-    
-    if dp[idx][pre] != -1:
-        return dp[idx][pre]
-
-    dp[idx][pre] = max(stair[idx],(recur(idx+1,pre+1) + stair[idx]), (recur(idx+2,1) + stair[idx]))
-
-    return dp[idx][pre]
+# 백트래킹 - 탑다운 - 바텀업
 
 n = int(input())
-stair = [0]
-dp = [[-1,-1,-1] for _ in range(n+1)]
-for _ in range(n):
-    score = int(input())
-    stair.append(score)
 
-print(recur(1,0))
+graph = [list(map(int,input().split())) for _ in range(n)]
+dp = [[0 for _ in range(3)] for _ in range(2)]
+
+
+for k in range(3):
+    dp[0][k] = graph[0][k]
+
+for i in range(1,n):
+    for j in range(3): # RGB
+        if j == 0:
+            dp[1][j] = min(dp[0][1] + graph[i][j], dp[0][2] + graph[i][j])
+        if j == 1:
+            dp[1][j] = min(dp[0][0] + graph[i][j], dp[0][2] + graph[i][j])
+        if j == 2:
+            dp[1][j] = min(dp[0][1] + graph[i][j], dp[0][0] + graph[i][j])
+    for f in range(3):
+        dp[0][f] = dp[1][f]
+    
 print(dp)
