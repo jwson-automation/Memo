@@ -1,23 +1,27 @@
-# 백트래킹 - 탑다운 - 바텀업
+def recur(idx):
+
+    recur(idx+1) # 세로블록을 사용했으면 다음 블록으로
+    recur(idx+2) # 가로블록 2개를 사용했으면 다음다음 블록으로
 
 n = int(input())
 
-graph = [list(map(int,input().split())) for _ in range(n)]
-dp = [[0 for _ in range(3)] for _ in range(2)]
+recur(0)
 
+# 경우의 수 쪼개기
 
-for k in range(3):
-    dp[0][k] = graph[0][k]
+# 0 0 0 0 0
+# 0 0 0 0 0
 
-for i in range(1,n):
-    for j in range(3): # RGB
-        if j == 0:
-            dp[1][j] = min(dp[0][1] + graph[i][j], dp[0][2] + graph[i][j])
-        if j == 1:
-            dp[1][j] = min(dp[0][0] + graph[i][j], dp[0][2] + graph[i][j])
-        if j == 2:
-            dp[1][j] = min(dp[0][1] + graph[i][j], dp[0][0] + graph[i][j])
-    for f in range(3):
-        dp[0][f] = dp[1][f]
-    
-print(dp)
+# 홀수랑 짝수 일 때가 다르다.
+
+# 1 - 1
+# 2 - 2
+# 3 - 3
+# 4 - 4 ....1 ..3 1 [-1 *2]
+# 5 - 6
+# 
+
+# 가로는 2개씩 써야함 4칸을 사용
+# 세로는 1개씩 써야함 세로 2칸을 사용
+
+# 각각의 idx 값 마다 경우의 수를 줄 수 가 있음 그러니까
