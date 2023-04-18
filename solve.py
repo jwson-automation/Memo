@@ -1,27 +1,29 @@
-def recur(idx):
-
-    recur(idx+1) # 세로블록을 사용했으면 다음 블록으로
-    recur(idx+2) # 가로블록 2개를 사용했으면 다음다음 블록으로
-
 n = int(input())
 
-recur(0)
+arr = list(map(int,input().split()))
+dp = [1 for _ in range(n)]
+dp2 = [1 for _ in range(n)]
 
-# 경우의 수 쪼개기
+for i in range(1, n):
+    for j in range(i):
+        if arr[i] > arr[j]:
+            dp[i] = max(dp[i], dp[j]+1)
 
-# 0 0 0 0 0
-# 0 0 0 0 0
 
-# 홀수랑 짝수 일 때가 다르다.
+arr2 = []
+for k2 in range(n)[::-1]:
+    arr2.append(arr[k2])
 
-# 1 - 1
-# 2 - 2
-# 3 - 3
-# 4 - 4 ....1 ..3 1 [-1 *2]
-# 5 - 6
-# 
+for i2 in range(1, n):
+    for j2 in range(i2):
+        if arr2[i2] > arr2[j2]:
+            dp2[i2] = max(dp2[i2], dp2[j2]+1)
 
-# 가로는 2개씩 써야함 4칸을 사용
-# 세로는 1개씩 써야함 세로 2칸을 사용
+# print(dp)
+# print(dp2)
 
-# 각각의 idx 값 마다 경우의 수를 줄 수 가 있음 그러니까
+answer = 0
+for k in range(n):
+    answer = max(answer, dp[k] + dp2[n-k-1]-1)
+
+print(answer)
