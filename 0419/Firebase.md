@@ -1,5 +1,7 @@
 # FireBase
 
+구글의 비장의 카드, '서버는 내가 해줄게 너는 개발만 해!' 의 선두주자
+
 ## Push
 
 Push : `C2DM` > `GCM` > `FCM` Firebase를 이용하는 푸쉬가 적용됨
@@ -21,7 +23,19 @@ Push를 주기 위해서는 항상 소켓이 연결되어 있어야 하는데, �
 `생각해볼것`
 오랜 기간동안 오프라인 상태로 둔 휴대폰에는 정말 모든 푸쉬 데이터가 완벽하게 보존되어 있을까? --> 당연히 아닐것이다. 서버가 그걸 전달하기 위해서 100% 들고 있도록 세팅하면 정말 엄청난 양의 데이터가 스택된다..
 
+## 여러가지 기능
+
+ML KIT - 머신러닝 SDK 제공 ( 텍스트 인식, 얼굴 인식, 바코드 스캔, 스마트 답장, 번역, 등)
+
+FireBase Cloud Messaging (FCM) - 푸쉬를 던지는 것
+
 ## chat
+
+전에 했던 것과 같이 recyclerView + Adapter를 예쁘게 짜줍니다.
+
+xml도 예쁘게 준비해줍니다.
+
+https://firebase.google.com/docs/database/android/lists-of-data?hl=ko
 
 ## 기타
 

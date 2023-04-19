@@ -1,29 +1,29 @@
-n = int(input())
+n,m,k = map(int,input().split())
+price = list(map(int,input().split()))
+relation = [[] for _ in range(n)]
+visited = [-1 for _ in range(n)]
 
-arr = list(map(int,input().split()))
-dp = [1 for _ in range(n)]
-dp2 = [1 for _ in range(n)]
+for _ in range(m):
+    v,w = map(int,input().split())
+    relation[v-1].append(w-1)
+    relation[w-1].append(v-1)
 
-for i in range(1, n):
-    for j in range(i):
-        if arr[i] > arr[j]:
-            dp[i] = max(dp[i], dp[j]+1)
+print(relation)
 
-
-arr2 = []
-for k2 in range(n)[::-1]:
-    arr2.append(arr[k2])
-
-for i2 in range(1, n):
-    for j2 in range(i2):
-        if arr2[i2] > arr2[j2]:
-            dp2[i2] = max(dp2[i2], dp2[j2]+1)
-
-# print(dp)
-# print(dp2)
+# k는 내가 가진 돈
+# price는 필요한 돈
+# 친구의 친구는 친구다.
 
 answer = 0
-for k in range(n):
-    answer = max(answer, dp[k] + dp2[n-k-1]-1)
 
-print(answer)
+def dfs(idx):
+    visited[idx] = 1
+    for j in relation[idx]:
+        visited[j] = 1
+
+def recur(idx,result):
+    
+    recur(idx+1, result)
+    recur(idx+1, result + price[idx])
+    
+recur(0)
