@@ -1,29 +1,21 @@
-n,m,k = map(int,input().split())
-price = list(map(int,input().split()))
-relation = [[] for _ in range(n)]
-visited = [-1 for _ in range(n)]
+import sys
+input = sys.stdin.readline
 
-for _ in range(m):
-    v,w = map(int,input().split())
-    relation[v-1].append(w-1)
-    relation[w-1].append(v-1)
+n = int(input())
+table = [[] for _ in range(n + 1)]
 
-print(relation)
+for i in range(n):
+    a, b = map(int, input().split())
+    table[i + 1] = [a, b]
 
-# k는 내가 가진 돈
-# price는 필요한 돈
-# 친구의 친구는 친구다.
+dp = [0 for _ in range(n + 1)]
 
-answer = 0
 
-def dfs(idx):
-    visited[idx] = 1
-    for j in relation[idx]:
-        visited[j] = 1
+for idx in range(1,n)[::-1]:
+    if idx + table[idx][0] > n:
+        dp[idx] = dp[idx+1]
+    else:
+        dp[idx] = max(dp[idx+1], dp[idx + table[idx][0]] + table[idx][1])
 
-def recur(idx,result):
-    
-    recur(idx+1, result)
-    recur(idx+1, result + price[idx])
-    
-recur(0)
+print(dp)
+print(max(dp))
