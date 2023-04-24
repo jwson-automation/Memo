@@ -47,6 +47,8 @@
 
 하지만, 코루틴의 경우에는 슬립과 running상태가 변경되는게 아닌, 그냥 다 running상태이기 때문에 자연스럽게 결과가 곂쳐져서 제공된다.
 
+코루틴은 순서를 정해두지 않았기 떄문에 더 가볍고 빠르다!
+
 ```kotlin
 class MainActivity : AppCompatActivity(){
 
