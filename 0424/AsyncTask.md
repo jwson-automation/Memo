@@ -12,6 +12,12 @@ Level30에서 deprecated되었음
 
 onProgressUpdate에서 실행시키는데, 저 부분에서만 Main Thread 동작을하기 때문입니다.
 
+사용할 때 중요한게
+
+`AsyncTask<Void, Int, Boolean>` 와 같이 3개의 제네릭 타입은 만들어서 연결해줘야 합니다.
+
+## 코드
+
 ```kotlin
 @Suppress("DEPRECATION")
 // deprrecation 무시
