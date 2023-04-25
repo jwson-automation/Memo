@@ -14,7 +14,9 @@ api : https://openweathermap.org/api
 
 - 플러그인 `JSON To Kotlin Class`를 사용하면 Json을 자동으로 Data Class로 예쁘게 바꿔줍니다.
 
--
+심화 지식
+
+- onResponse와 onFailure이 나눠져 있는데 한번더 isSuccessful로 확인하는 이유는, Response와 Failure에서는 HTTP 통신 가능 여부만 확인하고, 통신된 정보의 성공 실패는 체크하지 않기 때문이다.
 
 ## 라이브러리 추가
 
