@@ -1,21 +1,18 @@
-import sys
-input = sys.stdin.readline
+def check(): # 연결 가능한지 확인
+    pass
 
 n = int(input())
-table = [[] for _ in range(n + 1)]
+relation = [[] for _ in range(100)]
+for _ in range(n):
+    type, x, y = map(int,input().split())
 
-for i in range(n):
-    a, b = map(int, input().split())
-    table[i + 1] = [a, b]
+    if type == 1:
+        relation[x].append(y)
+        relation[y].append(x)
 
-dp = [0 for _ in range(n + 1)]
-
-
-for idx in range(1,n)[::-1]:
-    if idx + table[idx][0] > n:
-        dp[idx] = dp[idx+1]
-    else:
-        dp[idx] = max(dp[idx+1], dp[idx + table[idx][0]] + table[idx][1])
-
-print(dp)
-print(max(dp))
+    if type == 2:
+        if check():
+            print(1)
+        else:
+            print(0)
+        

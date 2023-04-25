@@ -50,4 +50,5 @@ fun getWeatherData(city: String, key: String) {
                     binding.textView.text = response.body().toString()
             }
         }
+}
 ```
