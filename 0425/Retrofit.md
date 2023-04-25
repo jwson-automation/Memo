@@ -67,3 +67,52 @@ interface WeatherInterface {
     ): Call<WeatherResponse>
 }
 ```
+
+## 액티비티에 적용
+
+```kotlin
+@SuppressLint("SetTextI18n")
+class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+    val API_KEY = "5cbe9dd4041225479ef6d0e088b2ffb8"  //""OPEN WEATHER MAP API KEY"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.tempBtn.setOnClickListener {
+            val city = binding.cityEt.text.toString()
+            var result = getWeatherData(city, API_KEY)
+        }
+    }
+
+    fun getWeatherData(city: String, key: String) {
+
+        val weatherInterface = ApplicationClass.wRetrofit.create(WeatherInterface::class.java)
+        weatherInterface.getWeather(city, key).enqueue(object : Callback<WeatherResponse> {
+            override fun onResponse(
+                call: Call<WeatherResponse>,
+                response: Response<WeatherResponse>
+            ) {
+                Log.d(TAG, "onResponse: ${response.body()}")
+                if (response.isSuccessful) {
+                    val temp = response.body()?.main?.temp
+                    binding.tempTv.text = temp.toString()
+                    binding.textView.text = response.body().toString()
+
+
+                } else {
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                Log.d(TAG, "onFailure: ${t.message}")
+            }
+        })
+
+
+    }
+}
+```
