@@ -43,4 +43,11 @@ dataBinding{
 
 4. <variable>로 이제 MainActivityWithDataBinding을 변수로 받아준다.
 5. `activity::onButtonClick`을 그냥 받아서 `android:onClick`에 연결시켜 버릴 수 있다!
-6.
+
+-
+
+여기에서 삼항 연산자 등을 이용해서 더 다양하게 표현할 수 있다.
+
+여기에서 완전히 새로 배워야 하는 문법이 추가됨으로, 호불호가 여기에서도 갈린다!
+
+`expression_language` el을 배워야 합니다~!
