@@ -25,6 +25,13 @@ onInActive : 활성 상태의 관찰자가 없을 때
 
 initialTime이 변수로 정해져 있어서 껐다가 켜도 다시 시간이 여전히 된 것 처럼 보입니다.
 
+4. 만약에 InActive 시키기 싫다면 어떻게 해야할까요?
+
+--> timerLiveData.observeForever(observer)
+--> timerliveData.removeObserver(observer)
+
+영원히 받는 옵저버 설정과 삭제가 가능합니다.
+
 ## 코드
 
 ```kotlin
