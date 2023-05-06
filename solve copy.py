@@ -1,29 +1,17 @@
-def recur(idx,pre):
-    print(idx,pre)
-    # 불가능한 경우
-    if pre > 2 :
-        return -9999999
-    
-    # 범위를 벗어난 경우
-    if idx > n :
-        return 0
-    
-    # 이미 계산된 경우
-    if dp[idx] != -1:
-        return dp[idx]
+import heapq
 
-    # 1칸 올랐을 때와 2칸 올랐을 떄
-    dp[idx] = max(recur(idx+1,pre+1) + stair[idx], recur(idx+2,1) + stair[idx])
+heap = [3,2,1,4,5,6,9,8,7]
 
-    return dp[idx]
+heapq.heapify(heap)
 
-n = int(input())
-stair = [0]
-dp = [-1 for _ in range(n+1)]
-for _ in range(n):
-    score = int(input())
-    stair.append(score)
+print(heap) # [1, 2, 3, 4, 5, 6, 9, 8, 7]
 
-print(recur(0,0))
-print(dp)
 
+
+
+
+# for _ in range(len(heap)):
+    # print(heapq.heappop(heap))
+
+# for _ in range(len(heap)):
+    # print(heapq.heappop(heap))
