@@ -1,34 +1,13 @@
-from collections import deque
+import heapq
 
-T = int(input())
-for t in range(T):
-    N, K = map(int, input().split())
-    time = list(map(int, input().split()))
-    count = [0] * N
-    relation = [[] for _ in range(N)]
+array = [3,2,1,4,7,6,9,10,7,11,12,13,-1]
+
+heapq.heapify(array)
+
+print(array)
 
 
-    for i in range(K):
-        X, Y = map(int, input().split())
-        relation[X-1].append(Y-1)
-        count[Y-1] += 1
+# 1. 1,2,3,4,5,6,7,8,9
 
-    W = int(input()) - 1
+# 2. 1,2,3,4,5,6,9,8,7
 
-    result = [0] * N
-
-    Q = deque()
-
-    for i in range(N):
-        if count[i] == 0 : # 0 인경우에
-            Q.append(i)
-
-    while count[W] > 0:
-        u = Q.popleft()
-        for next in relation[u]:
-            result[next] = max(result[next], result[u]+time[u])
-            count[next] -= 1
-            if not count[next]:
-                Q.append(next)
-
-    print(result[W]+time[W])
