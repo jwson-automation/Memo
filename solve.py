@@ -1,35 +1,41 @@
 import sys
-sys.setrecursionlimit(99999)
 
 input = sys.stdin.readline
+# 처음에는 스스로에게 사이클을 만들어줍니다.
+par = [i for i in range(1000010)]
+rank = [0 for _ in range(1000010)]
+size = [1 for _ in range(1000010)]
 
-def dfs(node,prv):
-    for nxt in relation[node]:
-        if nxt == prv:
-            continue
+def _find(x):
+    while par[x] != x:
+        x = par[x]
+    return x
 
-        # 자식에게 이동 -- ↑
-        dfs(nxt, node)
-        # 부모에게 이동 -- ↓
+# union by rank 해줍니다.
+def _union(a,b):
+    a = _find(a)
+    b = _find(b)
 
-        # 자식들의 숫자
-        child[node] += child[nxt]
+    if a == b:
+        return
+    
+    if rank[a] < rank[b]:
+        par[a] = b
+        size[b] += size[a]
+    elif rank[b] < rank[a]:
+        par[b] = a
+        size[a] += size[b]
+    else:
+        par[a] = b
+        size[b] += size[a]
+        rank[b] += 1
 
-n,root,q = map(int,input().split())
-relation = [[] for _ in range(n+1)]
-child = [1 for _ in range(n+1)]
+n = int(input())
 
-# 입력
-for i in range(n-1):
-    a, b = map(int,input().split())
-    relation[a].append(b)
-    relation[b].append(a)
+for i in range(n):
+    inp = list(input().split())
 
-
-# 출력
-dfs(root, -1)
-
-
-for _ in range(q):
-    answer = int(input())
-    print(child[answer])
+    if inp[0] == "I":
+        _union(int(inp[1]),int(inp[2]))
+    else:
+        print(size[_find(int(inp[1]))])
