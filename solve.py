@@ -1,41 +1,39 @@
-import sys
+# https://www.acmicpc.net/problem/17304
 
-input = sys.stdin.readline
-# 처음에는 스스로에게 사이클을 만들어줍니다.
-par = [i for i in range(1000010)]
-rank = [0 for _ in range(1000010)]
-size = [1 for _ in range(1000010)]
+def _find():
+    pass
+def _union():
+    pass
 
-def _find(x):
-    while par[x] != x:
-        x = par[x]
-    return x
+n, m = map(int,input().split())
+relation = [[] for _ in range(n+1)]
+double = [[] for _ in range(n+1)]
+visited = [0 for _ in range(n+1)]
 
-# union by rank 해줍니다.
-def _union(a,b):
-    a = _find(a)
-    b = _find(b)
+# 단방향 양방향 분리
+for _ in range(m):
+    a, b = map(int,input().split())
 
-    if a == b:
-        return
-    
-    if rank[a] < rank[b]:
-        par[a] = b
-        size[b] += size[a]
-    elif rank[b] < rank[a]:
-        par[b] = a
-        size[a] += size[b]
+    if a in relation[b]:
+        relation[b].remove(a)
+        double[a].append(b)
+        double[b].append(a)
     else:
-        par[a] = b
-        size[b] += size[a]
-        rank[b] += 1
+        relation[a].append(b)
 
-n = int(input())
+# 단방향 방문 처리 완료
+for i in relation:
+    for j in i:
+        visited[j] = 1
 
-for i in range(n):
-    inp = list(input().split())
+# 양방향 그래프 트리 확인
+# 트리인가?
+# 사이클이 있는가?
+# 방문 처리가 포함 되어 있는 트리인가?
+for i in range(1, n+1):
+    pass
 
-    if inp[0] == "I":
-        _union(int(inp[1]),int(inp[2]))
-    else:
-        print(size[_find(int(inp[1]))])
+
+print(relation)
+print(double)
+print(visited)
